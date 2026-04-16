@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RRUGES – Fraktionskleidung</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    body {
+      position: relative;
+      background: url('background.png') center / cover no-repeat;
+      transition: opacity 0.5s ease;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 0, 0, 0.34);
+      z-index: 0;
+    }
+
+    .intro-fade {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      z-index: 50;
+      animation: fadeIntro 1.2s ease forwards;
+    }
+
+    .scene {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      padding: 20px;
+    }
+
+    .scroll-wrap {
+      width: min(80vw, 1200px);
+      opacity: 0;
+      transform-origin: top;
+      clip-path: inset(0 0 100% 0);
+      cursor: pointer;
+
+      animation:
+        drop 0.8s ease-out forwards,
+        unroll 1.5s ease forwards 0.8s,
+        float 5s ease-in-out infinite 2.5s;
+
+      transition: transform 0.25s ease, filter 0.25s ease;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.45));
+    }
+
+    .scroll-wrap:hover {
+      transform: scale(1.02);
+      filter: brightness(1.05);
+    }
+
+    .scroll-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 20;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(45, 10, 10, 0.85);
+      color: #f2d7b1;
+      cursor: pointer;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(35,10,10,0.8);
+      color: #f2d7b1;
+      font-size: 13px;
+      opacity: 0;
+      animation: hintIn 0.8s ease forwards 2s;
+    }
+
+    /* Animationen */
+
+    @keyframes fadeIntro {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    @keyframes drop {
+      from {
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes unroll {
+      from { clip-path: inset(0 0 90% 0); }
+      to { clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes hintIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="intro-fade"></div>
+
+<button class="back-button" onclick="window.location.href='rangordnung.html'">
+  Zurück
+</button>
+
+<div class="scene">
+
+  <!-- KLICKBARE SCHRIFTROLLE -->
+  <div class="scroll-wrap" onclick="goNext()">
+    <img src="scroll_kleidung.png" alt="Fraktionskleidung">
+  </div>
+
+</div>
+
+<div class="hint">Klick auf die Schriftrolle</div>
+
+<script>
+function goNext() {
+  document.body.style.opacity = "0";
+
+  setTimeout(() => {
+    window.location.href = "autolackierung.html";
+  }, 500);
+}
+</script>
+
+</body>
+</html>
