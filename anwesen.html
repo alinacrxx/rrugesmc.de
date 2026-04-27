@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RRUGES – Anwesen</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+body {
+  background: url('background.png') center/cover no-repeat;
+  transition: opacity 0.5s ease;
+}
+
+/* Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(10,0,0,0.5);
+  z-index: 0;
+}
+
+/* Szene */
+.scene {
+  position: relative;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 📜 Schriftrolle */
+.scroll {
+  width: min(65vw, 900px);
+  cursor: pointer;
+
+  opacity: 0;
+  clip-path: inset(0 0 100% 0);
+
+  animation:
+    drop 0.8s ease-out forwards,
+    unroll 1.5s ease forwards 0.8s;
+
+  transition: transform 0.3s ease, opacity 0.4s ease;
+}
+
+.scroll:hover {
+  transform: scale(1.03);
+}
+
+.scroll img {
+  width: 100%;
+  display: block;
+}
+
+/* 🎥 Video Overlay */
+.video-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.video-overlay.active {
+  display: flex;
+}
+
+/* Video */
+.video iframe {
+  width: 70vw;
+  height: 40vw;
+  max-width: 900px;
+  max-height: 500px;
+  border: none;
+  border-radius: 12px;
+}
+
+/* ❌ Close Button */
+.close {
+  position: fixed;
+  top: 30px;
+  right: 35px;
+  color: white;
+  font-size: 34px;
+  cursor: pointer;
+}
+
+/* 🔙 Back Button */
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(45,10,10,0.85);
+  color: #f2d7b1;
+  cursor: pointer;
+}
+
+/* Animationen */
+@keyframes drop {
+  from { transform: translateY(-100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes unroll {
+  from { clip-path: inset(0 0 90% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+</style>
+</head>
+
+<body>
+
+<button class="back-button" onclick="window.location.href='autolackierung.html'">
+  Zurück
+</button>
+
+<div class="scene">
+  <div class="scroll" id="scrollButton">
+    <img src="scroll_anwesen.png" alt="Anwesen">
+  </div>
+</div>
+
+<!-- 🎥 Video -->
+<div class="video-overlay" id="videoOverlay">
+  <div class="close" id="closeVideo">✖</div>
+
+  <div class="video">
+    <iframe
+      id="videoFrame"
+      src=""
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+<script>
+let videoOpened = false;
+
+const scrollButton = document.getElementById("scrollButton");
+const videoOverlay = document.getElementById("videoOverlay");
+const videoFrame = document.getElementById("videoFrame");
+const closeVideo = document.getElementById("closeVideo");
+
+/* 👉 Klick */
+scrollButton.addEventListener("click", function () {
+
+  if (!videoOpened) {
+    // 🔥 ERSTER KLICK → Video
+    scrollButton.style.opacity = "0";
+
+    setTimeout(() => {
+      scrollButton.style.display = "none";
+    }, 400);
+
+    videoFrame.src = "https://www.youtube.com/embed/lBllrIEbXyY?autoplay=1";
+    videoOverlay.classList.add("active");
+
+    videoOpened = true;
+
+  } else {
+    // 🔥 ZWEITER KLICK → NÄCHSTE SEITE
+    document.body.style.opacity = "0";
+
+    setTimeout(() => {
+      window.location.href = "mitglieder.html";
+    }, 500);
+  }
+});
+
+/* ❌ Video schließen */
+closeVideo.addEventListener("click", function () {
+  videoOverlay.classList.remove("active");
+  videoFrame.src = "";
+
+  scrollButton.style.display = "block";
+
+  setTimeout(() => {
+    scrollButton.style.opacity = "1";
+  }, 50);
+});
+</script>
+
+</body>
+</html>
